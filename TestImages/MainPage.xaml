@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 xmlns:local="clr-namespace:TestImages"
+			 Loaded="ContentPage_Loaded"
+             x:Class="TestImages.MainPage">
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style TargetType="Frame">
+				<Setter Property="VisualStateManager.VisualStateGroups">
+					<VisualStateGroupList>
+						<VisualStateGroup x:Name="CommonStates">
+							<VisualState x:Name="Normal" />
+							<VisualState x:Name="Selected">
+								<VisualState.Setters>
+									<Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+								</VisualState.Setters>
+							</VisualState>
+						</VisualStateGroup>
+					</VisualStateGroupList>
+				</Setter>
+			</Style>
+			<Style TargetType="Grid">
+				<Setter Property="VisualStateManager.VisualStateGroups">
+					<VisualStateGroupList>
+						<VisualStateGroup x:Name="CommonStates">
+							<VisualState x:Name="Normal" />
+							<VisualState x:Name="Selected">
+								<VisualState.Setters>
+									<Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+								</VisualState.Setters>
+							</VisualState>
+						</VisualStateGroup>
+					</VisualStateGroupList>
+				</Setter>
+			</Style>
+
+			<DataTemplate x:Key="OneAnimalTemplate">
+				<Frame>
+						<StackLayout>
+							<Label Text="{Binding Name}"/>
+							<Image Source="{Binding Images[0]}"/>
+						</StackLayout>
+				</Frame>
+			</DataTemplate>
+			<DataTemplate x:Key="MultipleAnimalsTemplate">
+				<Frame HeightRequest="400">
+					<StackLayout>
+						<StackLayout>
+							<Label Text="{Binding Name}"/>
+							<CarouselView ItemsSource="{Binding Images}" IndicatorView="indicatorView">
+								<CarouselView.ItemTemplate>
+									<DataTemplate>
+										<Image Source="{Binding .}" HeightRequest="200"/>
+									</DataTemplate>
+								</CarouselView.ItemTemplate>
+							</CarouselView>
+							<IndicatorView x:Name="indicatorView" IndicatorColor="LightGray" SelectedIndicatorColor="DarkGray" HorizontalOptions="Center" />
+						</StackLayout>
+					</StackLayout>
+				</Frame>
+			</DataTemplate>
+			
+			<local:AnimalTemplateSelector x:Key="AnimalTemplateSelector" OneAnimal="{StaticResource OneAnimalTemplate}" MultipleAnimals="{StaticResource MultipleAnimalsTemplate}"  />
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<Grid RowDefinitions="auto, *">
+		<Label Text="Do you see me?" />
+		<CollectionView Grid.Row="1" ItemsSource="{Binding Animals}" SelectionMode="Single" SelectedItem="{Binding SelectedAnimal}" ItemTemplate="{StaticResource AnimalTemplateSelector}" >
+		</CollectionView>
+		<Button Text="n New Images" Grid.Row="1"  HorizontalOptions="Center" WidthRequest="200" HeightRequest="40" VerticalOptions="Start"  ZIndex="1" />
+	</Grid>
+
+
+
+</ContentPage>
